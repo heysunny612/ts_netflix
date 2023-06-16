@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { useScroll, useTransform, motion, Variants } from 'framer-motion';
+import { BsSearch } from 'react-icons/bs';
+import React, { useState, useRef } from 'react';
 
 const Header = styled(motion.header)`
   display: flex;
@@ -30,7 +32,6 @@ const Ul = styled.ul`
     position: relative;
   }
 `;
-
 const Circle = styled(motion.span)`
   width: 10px;
   height: 10px;
@@ -40,13 +41,39 @@ const Circle = styled(motion.span)`
   left: 0;
   right: 0;
   margin: 0 auto;
-
   bottom: -15px;
   border-radius: 10px;
 `;
+const Search = styled.form`
+  overflow: hidden;
+  display: flex;
+  align-items: center;
 
-const Search = styled.div``;
+  div {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    border: 1px solid transparent;
+    padding: 5px 3px;
+    border-radius: 5px;
+  }
 
+  input[type='text'] {
+    width: 250px;
+    padding: 5px;
+    z-index: 99;
+    background-color: transparent;
+    border: 0 none;
+    color: #fff;
+    outline: none;
+  }
+  button {
+    color: #fff;
+    font-size: 22px;
+  }
+`;
+
+//로고 애니메이션
 const logoVariants: Variants = {
   normal: { fillOpacity: 1, pathLength: 0 },
   active: {
@@ -61,21 +88,37 @@ const logoVariants: Variants = {
 };
 
 const navigation = [
-  { title: 'home', path: '/' },
+  { title: 'HOME', path: '/' },
   { title: 'TV Shows', path: '/tv' },
+  { title: 'Movies', path: '/movies' },
+  { title: 'Favorite', path: '/favorite' },
 ];
 
 export default function Navbar() {
   const location = useLocation();
+  const [searchOpen, setSearchOpen] = useState(false);
   const { scrollY } = useScroll();
   const bg = useTransform(
     scrollY,
     [0, 80],
-    ['rgba(255,255,255,0.5)', 'rgba(255,255,255,0)']
+    ['rgba(0,0,0,0)', 'rgba(0,0,0,0.7)']
   );
+  const inputRef = useRef<HTMLInputElement>(null);
+  const handleSumbit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
+  const handleToggle = () => {
+    if (!searchOpen) {
+      setTimeout(() => {
+        inputRef.current && inputRef.current.focus();
+      }, 600);
+    }
+    setSearchOpen((open) => !open);
+  };
 
   return (
-    <Header style={{ backgroundColor: bg }}>
+    <Header style={{ background: bg }}>
       <Nav>
         <Link to='/'>
           <Logo xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 276.742'>
@@ -102,8 +145,25 @@ export default function Navbar() {
           ))}
         </Ul>
       </Nav>
-      <Search>
-        <button>검색</button>
+      <Search onSubmit={handleSumbit}>
+        <motion.div
+          initial={{ x: 250 }}
+          animate={{
+            x: searchOpen ? 0 : 250,
+            borderColor: `rgba(255,255,255,${searchOpen ? '0.5' : '0'})`,
+            backgroundColor: `rgba(0,0,0,${searchOpen ? '0.5' : '0'})`,
+            transition: { duration: 0.5 },
+          }}
+        >
+          <button onClick={handleToggle}>
+            <BsSearch />
+          </button>
+          <input
+            type='text'
+            placeholder='Search for movie or tv show.'
+            ref={inputRef}
+          />
+        </motion.div>
       </Search>
     </Header>
   );

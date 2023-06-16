@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const Section = styled.section`
   width: 100%;
   height: 1000px;
-  background-color: black;
+  background-color: red;
 `;
 
 export default function Home() {
