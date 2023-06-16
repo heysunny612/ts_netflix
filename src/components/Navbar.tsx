@@ -12,6 +12,7 @@ const Header = styled(motion.header)`
   position: fixed;
   width: 100%;
   height: 80px;
+  z-index: 99;
 `;
 const Nav = styled.nav`
   display: flex;
@@ -101,7 +102,7 @@ export default function Navbar() {
   const bg = useTransform(
     scrollY,
     [0, 80],
-    ['rgba(0,0,0,0)', 'rgba(0,0,0,0.7)']
+    ['rgba(0,0,0,1)', 'rgba(0,0,0,0.5)']
   );
   const inputRef = useRef<HTMLInputElement>(null);
   const handleSumbit = (event: React.FormEvent<HTMLFormElement>) => {
