@@ -4,6 +4,7 @@ import Api from '../api/api';
 import makeImgPath from '../utils/makeImgPath';
 import ReactPlayer from 'react-player';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 const Banner = styled.section<{ bg: string }>`
   position: relative;
@@ -19,17 +20,30 @@ const Banner = styled.section<{ bg: string }>`
 `;
 
 const BannerInfo = styled.div`
+  overflow: hidden;
   position: absolute;
-  bottom: 30%;
-  left: 50px;
+  top: -80px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 50px;
+
   h2 {
     font-size: 5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
   p {
     font-size: 1.2rem;
-    width: 50%;
+    width: 60%;
     line-height: 1.5;
+  }
+  button {
+    position: relative;
+    z-index: 9;
   }
 `;
 
@@ -81,22 +95,23 @@ export default function Home() {
             )}
             <BannerInfo>
               <motion.h2
-                initial={{ fontSize: '12rem', y: 0 }}
+                initial={{ fontSize: '12rem' }}
                 animate={{
-                  y: 150,
                   fontSize: '7rem',
-                  transition: { delay: 5, duration: 1.5 },
+                  transition: { delay: 5, duration: 0.5 },
                 }}
               >
                 {movies.results[0]?.title}
-              </motion.h2>
+              </motion.h2>{' '}
               <motion.p
                 initial={{ opacity: 1 }}
                 animate={{
                   opacity: 0,
-                  y: 150,
-                  transition: { delay: 5, duration: 1.5 },
+                  y: 50,
+                  height: 0,
+                  transition: { delay: 5, duration: 0.5 },
                 }}
+                transition={{}}
               >
                 {movies.results[0]?.overview}
               </motion.p>
