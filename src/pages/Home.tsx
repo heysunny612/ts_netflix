@@ -26,22 +26,20 @@ const Banner = styled.section<{ bg: string }>`
 const BannerInfo = styled.div`
   overflow: hidden;
   position: absolute;
-  top: 10%;
+  top: 50%;
+  transform: translateY(-50%);
   bottom: 0;
-  left: 0;
-  right: 0;
-
-  padding: 50px;
+  padding: 0 50px;
 
   h2 {
-    font-size: 5rem;
+    font-size: 4rem;
     margin-bottom: 0.5rem;
   }
   p {
     font-size: 1.2rem;
     width: 60%;
     line-height: 1.5;
-    height: 140px;
+    height: 80px;
     overflow: hidden;
   }
   div {
@@ -84,7 +82,9 @@ export default function Home() {
           <Banner bg={makeImgPath(movies.results[0]?.backdrop_path || '')}>
             {videos && (
               <ReactPlayer
-                url={`https://youtu.be/${videos?.results[0].key}`}
+                url={videos.results.map(
+                  (video) => `https://youtu.be/${video.key}`
+                )}
                 width='100%'
                 height='100vh'
                 loop={false}
@@ -109,11 +109,11 @@ export default function Home() {
             <BannerInfo>
               <motion.h2
                 initial={{
-                  transform: 'scale(1.5)',
+                  transform: 'scale(1.2)',
                   transformOrigin: 'left bottom',
                 }}
                 animate={{
-                  transform: 'scale(1) translate3d(0px, 140px, 0px)',
+                  transform: 'scale(1) translate3d(0px, 80px, 0px)',
                   transition: { delay: 5, duration: 1 },
                 }}
               >
@@ -126,7 +126,7 @@ export default function Home() {
                 }}
                 animate={{
                   transform: 'scale(0)',
-                  transition: { delay: 5, duration: 1 },
+                  transition: { delay: 5, duration: 0 },
                 }}
               >
                 {movies.results[0]?.overview}
@@ -145,10 +145,15 @@ export default function Home() {
           </Banner>
           <Slider>
             <MovieSlider
-              movies={movies?.results.slice(1)}
+              movies={movies?.results.slice(1, 11)}
               title='오늘 글로벌 TOP10 시리즈'
+              ranking={true}
             />
           </Slider>
+          {/* <MovieSlider
+            movies={movies?.results.slice(1, 11)}
+            title='새로 올라온 컨텐츠'
+          /> */}
         </>
       )}
     </section>

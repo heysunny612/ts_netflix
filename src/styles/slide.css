@@ -1,18 +1,63 @@
 .slider_container {
-  padding: 0 50px;
+  padding: 40px 50px;
 }
+.slick-list {
+  overflow: visible !important;
+}
+
 .slider_title {
   font-size: 2rem;
 }
 .slick-slider:hover .slick-arrow {
   display: flex !important;
 }
+
 .slider_list {
   padding: 0 5px;
 }
 .slider_list img {
   width: 100%;
   border-radius: 5px;
+  cursor: pointer;
+}
+
+.slider_list.ranking {
+  position: relative;
+}
+
+.slider_list.ranking .raking_num {
+  position: absolute;
+  top: 50%;
+  left: 35px !important;
+  transform: translateY(-55%);
+  font-size: 16rem;
+  font-weight: 800;
+  color: #000000;
+  -webkit-text-stroke: 4px #595959;
+  -webkit-text-fill-color: #000000;
+  fill: #000000;
+  transform-origin: center right;
+}
+
+.slider_list.ranking .raking_num.last {
+  left: 0px;
+  font-size: 15rem;
+  letter-spacing: -30px;
+}
+
+.slider_list.ranking .slider_img {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 88;
+  transform-origin: center right !important;
+  cursor: pointer;
+}
+
+.slider_list.ranking .slider_img img {
+  object-fit: cover;
+  width: 50%;
 }
 
 .slick-arrow {
@@ -41,4 +86,39 @@
 }
 .slick-next {
   right: -50px;
+}
+
+/*반응형 바꿔줘야함*/
+.slick-slide:first-child .slider_img {
+  transform-origin: center left;
+}
+
+/*반응형 바꿔줘야함*/
+.slick-slide:last-child .slider_img,
+.slick-slide:nth-child(6n) .slider_img {
+  transform-origin: center right;
+}
+
+/*------------슬라이드 인포------------*/
+
+.slider_info {
+  padding: 10px;
+  opacity: 0;
+  top: 100%;
+  left: 0;
+  color: #fff;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  line-height: 1.5;
+  font-size: 0.8rem;
+}
+
+.slider_info h4 {
+  font-size: 1rem;
+}
+
+/*랭킹 인포*/
+.slider_list.ranking .slider_info {
+  text-align: right;
 }
