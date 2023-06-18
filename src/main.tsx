@@ -5,6 +5,7 @@ import { theme } from './styles/theme.ts';
 import { GlobalStyles } from './styles/GlobalStyles.ts';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Router from './pages/Router.tsx';
+import './styles/slide.css';
 
 const queryClient = new QueryClient();
 

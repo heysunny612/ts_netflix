@@ -4,7 +4,10 @@ import Api from '../api/api';
 import makeImgPath from '../utils/makeImgPath';
 import ReactPlayer from 'react-player';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import Button from '../components/Button';
+import { FaPlay } from 'react-icons/fa';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
+import MovieSlider from '../components/MovieSlider';
 
 const Banner = styled.section<{ bg: string }>`
   position: relative;
@@ -14,7 +17,8 @@ const Banner = styled.section<{ bg: string }>`
   align-items: flex-start;
   width: 100%;
   height: 100vh;
-  background-image: ${(props) => `url(${props.bg})`};
+  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
+    ${(props) => `url(${props.bg})`};
   background-position: center center;
   background-size: cover;
 `;
@@ -22,14 +26,11 @@ const Banner = styled.section<{ bg: string }>`
 const BannerInfo = styled.div`
   overflow: hidden;
   position: absolute;
-  top: -80px;
+  top: 10%;
   bottom: 0;
   left: 0;
   right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-direction: column;
+
   padding: 50px;
 
   h2 {
@@ -40,11 +41,19 @@ const BannerInfo = styled.div`
     font-size: 1.2rem;
     width: 60%;
     line-height: 1.5;
+    height: 140px;
+    overflow: hidden;
   }
-  button {
-    position: relative;
-    z-index: 9;
+  div {
+    display: flex;
+    gap: 15px;
   }
+`;
+
+const Slider = styled.section`
+  margin-top: -300px;
+  position: relative;
+  z-index: 99;
 `;
 
 export default function Home() {
@@ -53,15 +62,19 @@ export default function Home() {
     isLoading,
     error,
     data: movies,
-  } = useQuery(['movies', 'nowPlaying'], () => api.getMovies());
+  } = useQuery(['movies', 'nowPlaying'], () => api.getMovies(), {
+    staleTime: 50000,
+  });
 
-  const { data: videos } = useQuery(['videos'], () =>
-    api.getMovies().then((data) => {
-      const id = data.results[0].id;
-      return api.getVideos(id);
-    })
+  const { data: videos } = useQuery(
+    ['videos'],
+    () =>
+      api.getMovies().then((data) => {
+        const id = data.results[0].id;
+        return api.getVideos(id);
+      }),
+    { staleTime: 50000 }
   );
-
   return (
     <section>
       {isLoading && <p>로딩중니다</p>}
@@ -74,7 +87,7 @@ export default function Home() {
                 url={`https://youtu.be/${videos?.results[0].key}`}
                 width='100%'
                 height='100vh'
-                loop={true}
+                loop={false}
                 playing={true}
                 muted={true}
                 controls={false}
@@ -95,30 +108,47 @@ export default function Home() {
             )}
             <BannerInfo>
               <motion.h2
-                initial={{ fontSize: '12rem' }}
+                initial={{
+                  transform: 'scale(1.5)',
+                  transformOrigin: 'left bottom',
+                }}
                 animate={{
-                  fontSize: '7rem',
-                  transition: { delay: 5, duration: 0.5 },
+                  transform: 'scale(1) translate3d(0px, 140px, 0px)',
+                  transition: { delay: 5, duration: 1 },
                 }}
               >
                 {movies.results[0]?.title}
-              </motion.h2>{' '}
+              </motion.h2>
               <motion.p
-                initial={{ opacity: 1 }}
-                animate={{
-                  opacity: 0,
-                  y: 50,
-                  height: 0,
-                  transition: { delay: 5, duration: 0.5 },
+                initial={{
+                  transform: 'scale(1)',
+                  transformOrigin: 'left bottom',
                 }}
-                transition={{}}
+                animate={{
+                  transform: 'scale(0)',
+                  transition: { delay: 5, duration: 1 },
+                }}
               >
                 {movies.results[0]?.overview}
               </motion.p>
-              <button style={{ backgroundColor: 'red' }}>시청하기</button>
-              <button style={{ backgroundColor: 'red' }}>상세정보</button>
+              <div>
+                <Button accent='accent'>
+                  <FaPlay />
+                  재생
+                </Button>
+                <Button>
+                  <AiOutlineInfoCircle />
+                  상세 정보
+                </Button>
+              </div>
             </BannerInfo>
           </Banner>
+          <Slider>
+            <MovieSlider
+              movies={movies?.results.slice(1)}
+              title='오늘 글로벌 TOP10 시리즈'
+            />
+          </Slider>
         </>
       )}
     </section>
