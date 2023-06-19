@@ -60,16 +60,11 @@ export interface IMedia {
   vote_count: number;
   title: string;
   original_title: string;
-}
-
-export interface ITVShow extends IMedia {
+  media_type: string;
   first_air_date?: string;
   name?: string;
   origin_country?: string[];
   original_name?: string;
-}
-
-export interface IMovie extends IMedia {
   adult?: boolean;
   release_date?: string;
   video?: boolean;
@@ -89,7 +84,7 @@ export default class Api {
     });
   }
 
-  async getMovies(type: string): Promise<IMovie[]> {
+  async getMovies(type: string): Promise<IMedia[]> {
     return await this.apiClient.get(`movie/${type}`).then((data) => {
       return data.data.results;
     });
@@ -107,13 +102,15 @@ export default class Api {
       .then((data) => data.data);
   }
 
-  async getTv(type: string): Promise<ITVShow[]> {
-    return await this.apiClient.get(`tv/${type}`).then((data) => {
-      return data.data.results.map((result: ITVShow) => ({
-        ...result,
-        title: result.name,
-        original_title: result.original_name,
-      }));
-    });
+  async getTv(type: string): Promise<IMedia[]> {
+    return await this.apiClient
+      .get(`tv/${type}`)
+      .then((data) => data.data.results);
+  }
+
+  async getSearch(keyword: string): Promise<IMedia[]> {
+    return await this.apiClient
+      .get(`search/multi?query=${keyword}`)
+      .then((data) => data.data.results);
   }
 }

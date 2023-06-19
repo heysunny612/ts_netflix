@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import Api, { IMovie } from '../api/api';
+import Api, { IMedia } from '../api/api';
 import { styled } from 'styled-components';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import makeImgPath from '../utils/makeImgPath';
 import { MdClose } from 'react-icons/md';
@@ -120,21 +120,20 @@ const Content = styled.div`
 `;
 
 interface IModalProps {
-  movie: IMovie;
+  movie: IMedia;
   type: string;
 }
 
 export default function Modal({ movie, type }: IModalProps) {
-  const location = useLocation();
-  const isTvPage = location.pathname.startsWith('/tv');
+  const media_type = movie.media_type === 'tv';
   const { lockScroll, unLockScroll } = useBodyScrollLock();
 
   const api = new Api();
   const { movieId } = useParams();
   const navigate = useNavigate();
   const { isLoading, error, data } = useQuery(
-    ['detail', isTvPage],
-    () => api.getDetail(Number(movie.id), isTvPage ? 'tv' : 'movie'),
+    ['detail', media_type],
+    () => api.getDetail(Number(movie.id), media_type ? 'tv' : 'movie'),
     { staleTime: 1000 * 6 * 10 }
   );
 
@@ -161,7 +160,9 @@ export default function Modal({ movie, type }: IModalProps) {
             <ModalBg bg={bg}></ModalBg>
             <Content>
               <h3>
-                {movie.title} ({movie.original_title})
+                {movie.title || movie.name}
+                {movie.original_title &&
+                  `(${movie.original_title || movie.original_name})`}
               </h3>
               <p>{movie.overview}</p>
               <motion.button

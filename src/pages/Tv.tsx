@@ -34,7 +34,9 @@ export default function Tv() {
   return (
     <section>
       <>
-        {topRated && <Banner movie={topRated[0]} page='tv' />}
+        {topRated && (
+          <Banner movie={topRated[0]} page='tv' type='tv_topRated' />
+        )}
         {topLoading && <Loading />}
         {topError ? <Error /> : null}
         {topRated && (

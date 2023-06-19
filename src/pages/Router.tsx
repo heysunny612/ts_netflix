@@ -4,7 +4,6 @@ import Search from './Search.tsx';
 import Tv from './Tv.tsx';
 import NotFound from './NotFound.tsx';
 import App from '../App.tsx';
-import Favorite from './Favorite.tsx';
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -17,8 +16,8 @@ export default function Router() {
         { path: '/:category/:movieId', element: <Home /> },
         { path: '/tv', element: <Tv /> },
         { path: '/tv/:category/:movieId', element: <Tv /> },
-        { path: '/favorite', element: <Favorite /> },
-        { path: '/search/:id', element: <Search /> },
+        { path: '/search', element: <Search /> },
+        { path: '/search/:movieId', element: <Search /> },
       ],
     },
   ]);

@@ -17,17 +17,15 @@
     "framer-motion": "^10.12.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.45.0",
     "react-icons": "^4.9.0",
     "react-player": "^2.12.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.13.0",
     "react-slick": "^0.29.0",
-    "react-uuid": "^2.0.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.0.0-rc.3",
-    "styled-normalize": "^8.0.7",
-    "uuid": "^9.0.0",
-    "uuidv4": "^6.2.13"
+    "styled-normalize": "^8.0.7"
   },
   "devDependencies": {
     "@types/react": "^18.0.37",

@@ -81,8 +81,6 @@ export default function Banner({ movie, page, type }: IBannerProps) {
     { staleTime: 1000 * 6 * 10 }
   );
 
-  console.log(videos);
-
   const handleClick = () => navigate(`${type}/${movie?.id}`);
   const isSmallScreen = useMediaQuery('(max-width:1024px)');
   return (
@@ -120,7 +118,7 @@ export default function Banner({ movie, page, type }: IBannerProps) {
             }}
             animate={{
               transform: 'scale(1) translate3d(0px, 80px, 0px)',
-              transition: { delay: 5, duration: 1 },
+              transition: { delay: 3, duration: 1 },
             }}
           >
             {movie.title}
@@ -132,7 +130,7 @@ export default function Banner({ movie, page, type }: IBannerProps) {
             }}
             animate={{
               transform: 'scale(0)',
-              transition: { delay: 5, duration: 0 },
+              transition: { delay: 3, duration: 0 },
             }}
           >
             {movie.overview}

@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { useScroll, useTransform, motion, Variants } from 'framer-motion';
-import { BsSearch } from 'react-icons/bs';
-import React, { useState, useRef } from 'react';
+import { useState } from 'react';
 import { BiDownArrow } from 'react-icons/bi';
+import Search from './Search';
 
 const Header = styled(motion.header)`
   display: flex;
@@ -87,35 +87,6 @@ const Circle = styled(motion.span)`
     display: none;
   }
 `;
-const Search = styled.form`
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-
-  div {
-    display: flex;
-    justify-content: space-between;
-    width: 250px;
-    border: 1px solid transparent;
-    padding: 5px 3px;
-    border-radius: 5px;
-  }
-
-  input[type='text'] {
-    width: 200px;
-    padding: 5px;
-    z-index: 99;
-    background-color: transparent;
-    border: 0 none;
-    color: #fff;
-    outline: none;
-  }
-  button {
-    color: #fff;
-    font-size: 22px;
-  }
-`;
-
 //로고 애니메이션
 const logoVariants: Variants = {
   normal: { fillOpacity: 1, pathLength: 0 },
@@ -137,27 +108,15 @@ const navigation = [
 
 export default function Navbar() {
   const location = useLocation();
-  const [searchOpen, setSearchOpen] = useState(false);
   const { scrollY } = useScroll();
   const bg = useTransform(
     scrollY,
     [0, 80],
     ['rgba(0,0,0,1)', 'rgba(0,0,0,0.5)']
   );
-  const inputRef = useRef<HTMLInputElement>(null);
-  const handleSumbit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
+
   const [mobilenav, setMobileNav] = useState(false);
   const toggleMobileNav = () => setMobileNav((prev) => !prev);
-  const handleToggle = () => {
-    if (!searchOpen) {
-      setTimeout(() => {
-        inputRef.current && inputRef.current.focus();
-      }, 600);
-    }
-    setSearchOpen((open) => !open);
-  };
 
   return (
     <Header style={{ background: bg }}>
@@ -191,22 +150,7 @@ export default function Navbar() {
           ))}
         </Ul>
       </Nav>
-      <Search onSubmit={handleSumbit}>
-        <motion.div
-          initial={{ x: 200 }}
-          animate={{
-            x: searchOpen ? 0 : 200,
-            borderColor: `rgba(255,255,255,${searchOpen ? '0.5' : '0'})`,
-            backgroundColor: `rgba(0,0,0,${searchOpen ? '0.5' : '0'})`,
-            transition: { duration: 0.5 },
-          }}
-        >
-          <button onClick={handleToggle}>
-            <BsSearch />
-          </button>
-          <input type='text' placeholder='Search for...' ref={inputRef} />
-        </motion.div>
-      </Search>
+      <Search />
     </Header>
   );
 }
