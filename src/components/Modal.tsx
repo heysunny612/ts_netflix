@@ -1,9 +1,10 @@
-import { AnimatePresence, delay, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Api, { IMovie } from '../api/api';
 import { styled } from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import makeImgPath from '../utils/makeImgPath';
+import { MdClose } from 'react-icons/md';
 
 const ModalBox = styled(motion.article)`
   position: fixed;
@@ -12,7 +13,7 @@ const ModalBox = styled(motion.article)`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 200;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,13 +21,15 @@ const ModalBox = styled(motion.article)`
 `;
 
 const ModalContent = styled(motion.div)`
+  position: relative;
   width: 50%;
   background-color: #141414;
   color: #fff;
+  z-index: 999;
 `;
 
 const ModalBg = styled.div<{ bg: string }>`
-  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
+  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)),
     ${(props) => `url(${props.bg})`};
   background-position: center center;
   background-size: cover;
@@ -44,9 +47,23 @@ const Content = styled.div`
   p {
     line-height: 1.5;
   }
+  button {
+    color: #ffffff;
+    background-color: #141414;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .content {
     display: flex;
-
     div.img {
       width: 200px;
       margin-right: 50px;
@@ -68,15 +85,16 @@ const Content = styled.div`
 
 interface IModalProps {
   movie: IMovie;
+  type: string;
 }
 
-export default function Modal({ movie }: IModalProps) {
+export default function Modal({ movie, type }: IModalProps) {
   const api = new Api();
   const { movieId } = useParams();
   const navigate = useNavigate();
   const { isLoading, error, data } = useQuery(
-    ['movie'],
-    () => api.getDetail(Number(movieId)),
+    ['movie', 'movieDetail'],
+    () => api.getDetail(Number(movie.id)),
     { staleTime: 1000 * 6 * 10 }
   );
   const bg = makeImgPath(movie.backdrop_path, 'w500');
@@ -86,18 +104,30 @@ export default function Modal({ movie }: IModalProps) {
     <AnimatePresence>
       {movieId ? (
         <ModalBox
-          onClick={() => navigate('/')}
+          onClick={() => {
+            navigate('/');
+          }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <ModalContent layoutId={movieId} transition={{ duration: 0.2 }}>
+          <ModalContent
+            layoutId={`${type + movie.id}`}
+            transition={{ duration: 0.2 }}
+            onClick={(event) => event.stopPropagation()}
+          >
             <ModalBg bg={bg}></ModalBg>
-
             <Content>
               <h3>
                 {movie.title} ({movie.original_title})
               </h3>
               <p>{movie.overview}</p>
+              <motion.button
+                onClick={() => navigate('/')}
+                whileHover={{ scale: 1.2 }}
+                initial={{ scale: 1 }}
+              >
+                <MdClose />
+              </motion.button>
               <div className='content'>
                 <div className='img'>
                   <img src={poster} alt='' width='100%' />
@@ -132,8 +162,6 @@ export default function Modal({ movie }: IModalProps) {
                       개봉일
                       <span>{movie.release_date}</span>
                     </li>
-                    <li>{movie.popularity}</li>
-                    <li>{data?.budget}</li>
                   </ul>
                 </div>
               </div>

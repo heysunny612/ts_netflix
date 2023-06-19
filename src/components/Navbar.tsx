@@ -12,7 +12,7 @@ const Header = styled(motion.header)`
   position: fixed;
   width: 100%;
   height: 80px;
-  z-index: 99;
+  z-index: 30;
 `;
 const Nav = styled.nav`
   display: flex;
@@ -21,6 +21,7 @@ const Nav = styled.nav`
 
 const Logo = styled(motion.svg)`
   height: 40px;
+  margin-right: 30px;
   fill: ${(props) => props.theme.red};
 `;
 
@@ -91,7 +92,6 @@ const logoVariants: Variants = {
 const navigation = [
   { title: 'HOME', path: '/' },
   { title: 'TV Shows', path: '/tv' },
-  { title: 'Movies', path: '/movies' },
   { title: 'Favorite', path: '/favorite' },
 ];
 

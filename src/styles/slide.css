@@ -7,6 +7,8 @@
 
 .slider_title {
   font-size: 2rem;
+  position: relative;
+  z-index: 1;
 }
 .slick-slider:hover .slick-arrow {
   display: flex !important;
@@ -50,7 +52,7 @@
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  z-index: 88;
+  z-index: 10;
   transform-origin: center right !important;
   cursor: pointer;
 }
@@ -58,6 +60,8 @@
 .slider_list.ranking .slider_img img {
   object-fit: cover;
   width: 50%;
+  position: relative;
+  z-index: 1;
 }
 
 .slick-arrow {

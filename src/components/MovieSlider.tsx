@@ -11,6 +11,7 @@ interface ImoviesPrpos {
   movies: IMovie[];
   title: string;
   ranking?: boolean;
+  type: string;
 }
 
 const imgVariants: Variants = {
@@ -31,10 +32,18 @@ const infoVariants: Variants = {
   },
 };
 
-export default function MovieSlider({ movies, title, ranking }: ImoviesPrpos) {
+export default function MovieSlider({
+  movies,
+  title,
+  ranking,
+  type,
+}: ImoviesPrpos) {
   const navigate = useNavigate();
-  const { movieId } = useParams();
-  const ClickedMovie = movieId && movies.find((movie) => movie.id === +movieId);
+  const { category, movieId } = useParams();
+
+  const ClickedMovie = movies.find(
+    (movie) => type === category && movie.id + '' === movieId
+  );
 
   const settings = {
     dots: false,
@@ -89,9 +98,9 @@ export default function MovieSlider({ movies, title, ranking }: ImoviesPrpos) {
               initial='normal'
               variants={imgVariants}
               transition={{ type: 'tween' }}
-              onClick={() => navigate(`/movies/${movie.id}`)}
+              onClick={() => navigate(`/${type}/${movie.id}`)}
               role='button'
-              layoutId={movie.id + ''}
+              layoutId={`${type + movie.id}`}
             >
               <img
                 src={makeImgPath(
@@ -108,7 +117,7 @@ export default function MovieSlider({ movies, title, ranking }: ImoviesPrpos) {
           </div>
         ))}
       </Slider>
-      {ClickedMovie && <Modal movie={ClickedMovie} />}
+      {ClickedMovie && <Modal movie={ClickedMovie} type={type} />}
     </section>
   );
 }

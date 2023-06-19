@@ -15,17 +15,7 @@ export interface IMovie {
   video: boolean;
   vote_average: number;
   vote_count: number;
-}
-
-interface IMoviesResponse {
-  dates: {
-    maximum: string;
-    minimum: string;
-  };
-  page: number;
-  results: IMovie[];
-  total_pages: number;
-  total_results: number;
+  uuid: string;
 }
 
 interface IVideo {
@@ -96,6 +86,22 @@ interface MovieData {
   vote_count: number;
 }
 
+export interface ITVShow {
+  backdrop_path: string;
+  first_air_date: string;
+  genre_ids: number[];
+  id: number;
+  name: string;
+  origin_country: string[];
+  original_language: string;
+  original_name: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  vote_average: number;
+  vote_count: number;
+}
+
 const API_KEY = '7b86c0c40a44a8f351d5618936d807a1';
 
 export default class Api {
@@ -110,10 +116,10 @@ export default class Api {
     });
   }
 
-  async getMovies(): Promise<IMoviesResponse> {
-    return await this.apiClient
-      .get('movie/now_playing')
-      .then((data) => data.data);
+  async getMovies(type: string): Promise<IMovie[]> {
+    return await this.apiClient.get(`movie/${type}`).then((data) => {
+      return data.data.results;
+    });
   }
 
   async getVideos(movie_id: number): Promise<IVideosResponse> {
@@ -126,5 +132,15 @@ export default class Api {
     return await this.apiClient
       .get(`movie/${movie_id}`)
       .then((data) => data.data);
+  }
+
+  async getTv(type: string): Promise<ITVShow[]> {
+    return await this.apiClient.get(`tv/${type}`).then((data) => {
+      return data.data.results.map((result: ITVShow) => ({
+        ...result,
+        title: result.name,
+        original_title: result.original_name,
+      }));
+    });
   }
 }
