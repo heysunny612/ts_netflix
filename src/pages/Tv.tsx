@@ -24,14 +24,6 @@ export default function Tv() {
   });
 
   const {
-    isLoading: popularLoading,
-    error: popularError,
-    data: popular,
-  } = useQuery(['tv', 'popular'], () => api.getTv('popular'), {
-    staleTime: 50000,
-  });
-
-  const {
     isLoading: topLoading,
     error: topError,
     data: topRated,
@@ -39,27 +31,19 @@ export default function Tv() {
     staleTime: 50000,
   });
 
-  const {
-    isLoading: upcomingLoading,
-    error: upcomingError,
-    data: upcoming,
-  } = useQuery(['tv', 'upcoming'], () => api.getTv('on_the_air'), {
-    staleTime: 50000,
-  });
-
   return (
     <section>
       <>
-        {nowPlaying && <Banner movie={nowPlaying[0]} />}
+        {topRated && <Banner movie={topRated[0]} page='tv' />}
         {topLoading && <Loading />}
         {topError ? <Error /> : null}
         {topRated && (
           <Slider>
             <MovieSlider
-              movies={topRated.slice(1, 11)}
+              movies={topRated.slice(0, 10)}
               title='최고 평점을 받은 TV SHOW 추천'
               ranking={true}
-              type='topRated'
+              type='tv_topRated'
             />
           </Slider>
         )}
@@ -70,28 +54,7 @@ export default function Tv() {
           <MovieSlider
             movies={nowPlaying}
             title='현재 절찬 상영중'
-            type='nowPlaying'
-          />
-        )}
-
-        {popularLoading && <Loading />}
-        {popularError ? <Error /> : null}
-        {popular && (
-          <MovieSlider
-            movies={popular.slice(0, 10)}
-            title='오늘 글로벌 TOP10 시리즈'
-            ranking={true}
-            type='popular'
-          />
-        )}
-
-        {upcomingLoading && <Loading />}
-        {upcomingError ? <Error /> : null}
-        {upcoming && (
-          <MovieSlider
-            movies={upcoming}
-            title='일주일내로 상영되는 기대작'
-            type='upcoming'
+            type='tv_nowPlaying'
           />
         )}
       </>

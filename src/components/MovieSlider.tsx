@@ -1,14 +1,14 @@
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { IMovie } from '../api/api';
+import { IMedia } from '../api/api';
 import makeImgPath from '../utils/makeImgPath';
 import { Variants, motion } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
 import Modal from './Modal';
 
 interface ImoviesPrpos {
-  movies: IMovie[];
+  movies: IMedia[];
   title: string;
   ranking?: boolean;
   type: string;
@@ -41,9 +41,9 @@ export default function MovieSlider({
   const navigate = useNavigate();
   const { category, movieId } = useParams();
 
-  const ClickedMovie = movies.find(
-    (movie) => type === category && movie.id + '' === movieId
-  );
+  const ClickedMovie = movies.find((movie: IMedia) => {
+    return type === category && `${movie.id}` === movieId;
+  });
 
   const settings = {
     dots: false,
@@ -98,7 +98,7 @@ export default function MovieSlider({
               initial='normal'
               variants={imgVariants}
               transition={{ type: 'tween' }}
-              onClick={() => navigate(`/${type}/${movie.id}`)}
+              onClick={() => navigate(`${type}/${movie.id}`)}
               role='button'
               layoutId={`${type + movie.id}`}
             >

@@ -1,23 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
 
-export interface IMovie {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-  uuid: string;
-}
-
 interface IVideo {
   iso_639_1: string;
   iso_3166_1: string;
@@ -52,54 +34,50 @@ interface ProductionCountry {
   name: string;
 }
 
-interface SpokenLanguage {
-  english_name: string;
-  iso_639_1: string;
-  name: string;
-}
-
-interface MovieData {
-  adult: boolean;
+interface IMediaDetail {
+  adult?: boolean;
   backdrop_path: string;
-  belongs_to_collection: null | unknown;
-  budget: number;
   genres: Genre[];
-  homepage: string;
   id: number;
-  imdb_id: string;
-  original_language: string;
   original_title: string;
   overview: string;
   popularity: number;
   poster_path: string;
   production_companies: ProductionCompany[];
   production_countries: ProductionCountry[];
-  release_date: string;
-  revenue: number;
-  runtime: number;
-  spoken_languages: SpokenLanguage[];
-  status: string;
-  tagline: string;
+  release_date?: string;
+  runtime?: number;
+  status?: string;
   title: string;
-  video: boolean;
   vote_average: number;
   vote_count: number;
 }
 
-export interface ITVShow {
+export interface IMedia {
   backdrop_path: string;
-  first_air_date: string;
   genre_ids: number[];
   id: number;
-  name: string;
-  origin_country: string[];
   original_language: string;
-  original_name: string;
   overview: string;
   popularity: number;
   poster_path: string;
   vote_average: number;
   vote_count: number;
+  title: string;
+  original_title: string;
+}
+
+export interface ITVShow extends IMedia {
+  first_air_date?: string;
+  name?: string;
+  origin_country?: string[];
+  original_name?: string;
+}
+
+export interface IMovie extends IMedia {
+  adult?: boolean;
+  release_date?: string;
+  video?: boolean;
 }
 
 const API_KEY = '7b86c0c40a44a8f351d5618936d807a1';
@@ -128,9 +106,9 @@ export default class Api {
       .then((data) => data.data);
   }
 
-  async getDetail(movie_id: number): Promise<MovieData> {
+  async getDetail(movie_id: number, type: string): Promise<IMediaDetail> {
     return await this.apiClient
-      .get(`movie/${movie_id}`)
+      .get(`${type}/${movie_id}`)
       .then((data) => data.data);
   }
 

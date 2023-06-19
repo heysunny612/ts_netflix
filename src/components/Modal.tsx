@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import Api, { IMovie } from '../api/api';
 import { styled } from 'styled-components';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import makeImgPath from '../utils/makeImgPath';
 import { MdClose } from 'react-icons/md';
@@ -89,14 +89,19 @@ interface IModalProps {
 }
 
 export default function Modal({ movie, type }: IModalProps) {
+  const location = useLocation();
+  const isTvPage = location.pathname.startsWith('/tv');
+  console.log(isTvPage);
+
   const api = new Api();
   const { movieId } = useParams();
   const navigate = useNavigate();
   const { isLoading, error, data } = useQuery(
-    ['movie', 'movieDetail'],
-    () => api.getDetail(Number(movie.id)),
+    ['detail', isTvPage],
+    () => api.getDetail(Number(movie.id), isTvPage ? 'tv' : 'movie'),
     { staleTime: 1000 * 6 * 10 }
   );
+
   const bg = makeImgPath(movie.backdrop_path, 'w500');
   const poster = makeImgPath(movie.poster_path, 'w500');
 
@@ -105,7 +110,7 @@ export default function Modal({ movie, type }: IModalProps) {
       {movieId ? (
         <ModalBox
           onClick={() => {
-            navigate('/');
+            navigate(-1);
           }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -122,7 +127,7 @@ export default function Modal({ movie, type }: IModalProps) {
               </h3>
               <p>{movie.overview}</p>
               <motion.button
-                onClick={() => navigate('/')}
+                onClick={() => navigate(-1)}
                 whileHover={{ scale: 1.2 }}
                 initial={{ scale: 1 }}
               >
@@ -142,10 +147,18 @@ export default function Modal({ movie, type }: IModalProps) {
                         {data?.vote_count.toLocaleString()}명 참여)
                       </span>
                     </li>
-                    <li>
-                      각본
-                      <span> {movie.release_date}</span>
-                    </li>
+                    {data?.runtime && (
+                      <li>
+                        런타임
+                        <span> {data?.runtime} 분</span>
+                      </li>
+                    )}
+                    {data?.release_date && (
+                      <li>
+                        출시일
+                        <span> {movie.release_date}</span>
+                      </li>
+                    )}
                     <li>
                       장르
                       {data?.genres.map((genre, index) => (
@@ -159,8 +172,16 @@ export default function Modal({ movie, type }: IModalProps) {
                       ))}
                     </li>
                     <li>
-                      개봉일
-                      <span>{movie.release_date}</span>
+                      만든나라
+                      {data?.production_countries.map((v, i) => (
+                        <span key={i}>{v.name}</span>
+                      ))}
+                    </li>
+                    <li>
+                      등급
+                      <span>
+                        {data?.adult === false ? '전체관람가' : '19세이상'}
+                      </span>
                     </li>
                   </ul>
                 </div>

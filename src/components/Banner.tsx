@@ -6,10 +6,11 @@ import Button from '../components/Button';
 import { FaPlay } from 'react-icons/fa';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { useQuery } from 'react-query';
-import Api, { IMovie } from '../api/api';
+import Api, { IMedia } from '../api/api';
 
 interface IBannerProps {
-  movie: IMovie;
+  movie: IMedia;
+  page: string;
 }
 
 const BannerWrap = styled.section<{ bg: string }>`
@@ -51,16 +52,20 @@ const BannerInfo = styled.div`
   }
 `;
 
-export default function Banner({ movie }: IBannerProps) {
+export default function Banner({ movie, page }: IBannerProps) {
   const api = new Api();
-  const { data: videos } = useQuery(['videos'], () => api.getVideos(movie.id), {
-    staleTime: 1000 * 6 * 10,
-  });
+  const { data: videos } = useQuery(
+    ['videos'],
+    () => api.getVideos(movie?.id || 0),
+    {
+      staleTime: 1000 * 6 * 10,
+    }
+  );
 
   return (
     <>
-      <BannerWrap bg={makeImgPath(movie.backdrop_path || '')}>
-        {videos && (
+      <BannerWrap bg={makeImgPath(movie?.backdrop_path || '')}>
+        {page !== 'tv' && videos && (
           <ReactPlayer
             url={videos.results.map((video) => `https://youtu.be/${video.key}`)}
             width='100%'
