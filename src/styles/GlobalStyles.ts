@@ -9,6 +9,5 @@ export const GlobalStyles = createGlobalStyle`
   body{ font-family: 'Noto Sans KR', sans-serif; color:#fff; background-color: #000; overflow-x:hidden;}
   button {outline:none;border:0 none; background-color:transparent;cursor: pointer;}
   h4{margin:0}
-
-
+ 
 `;

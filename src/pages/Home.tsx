@@ -52,7 +52,7 @@ export default function Home() {
       <>
         {popularLoading && <Loading />}
         {popularError ? <Error /> : null}
-        {nowPlaying && <Banner movie={nowPlaying[0]} />}
+        {nowPlaying && <Banner movie={nowPlaying[0]} type='nowPlaying' />}
         {popular && (
           <Slider>
             <MovieSlider

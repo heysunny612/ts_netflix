@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useScroll, useTransform, motion, Variants } from 'framer-motion';
 import { BsSearch } from 'react-icons/bs';
 import React, { useState, useRef } from 'react';
+import { BiDownArrow } from 'react-icons/bi';
 
 const Header = styled(motion.header)`
   display: flex;
@@ -13,25 +14,61 @@ const Header = styled(motion.header)`
   width: 100%;
   height: 80px;
   z-index: 30;
+
+  @media (max-width: 968px) {
+    padding: 0 15px;
+  }
 `;
 const Nav = styled.nav`
   display: flex;
   align-items: center;
+  position: relative;
 `;
 
 const Logo = styled(motion.svg)`
   height: 40px;
   margin-right: 30px;
   fill: ${(props) => props.theme.red};
+  @media (max-width: 968px) {
+    height: 20px;
+    margin-right: 0;
+  }
 `;
 
-const Ul = styled.ul`
+const MobileBtn = styled.button`
+  display: none;
+  margin-left: 10px;
+  color: #fff;
+  font-size: 1rem;
+
+  @media (max-width: 968px) {
+    display: flex;
+    align-items: center;
+  }
+`;
+
+const Ul = styled.ul<{ mobilenav: string }>`
   display: flex;
   align-items: center;
+
+  @media (max-width: 968px) {
+    position: absolute;
+    top: 35px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.5);
+    flex-direction: column;
+    width: 200px;
+    border-top: 2px solid #fff;
+    text-align: center;
+    display: ${(props) => (props.mobilenav === 'open' ? 'block' : 'none')};
+  }
   li {
     margin-right: 30px;
     color: #fff;
     position: relative;
+    @media (max-width: 968px) {
+      margin: 20px 0;
+    }
   }
 `;
 const Circle = styled(motion.span)`
@@ -45,6 +82,10 @@ const Circle = styled(motion.span)`
   margin: 0 auto;
   bottom: -15px;
   border-radius: 10px;
+
+  @media (max-width: 968px) {
+    display: none;
+  }
 `;
 const Search = styled.form`
   overflow: hidden;
@@ -54,14 +95,14 @@ const Search = styled.form`
   div {
     display: flex;
     justify-content: space-between;
-    width: 300px;
+    width: 250px;
     border: 1px solid transparent;
     padding: 5px 3px;
     border-radius: 5px;
   }
 
   input[type='text'] {
-    width: 250px;
+    width: 200px;
     padding: 5px;
     z-index: 99;
     background-color: transparent;
@@ -92,7 +133,6 @@ const logoVariants: Variants = {
 const navigation = [
   { title: 'HOME', path: '/' },
   { title: 'TV Shows', path: '/tv' },
-  { title: 'Favorite', path: '/favorite' },
 ];
 
 export default function Navbar() {
@@ -108,7 +148,8 @@ export default function Navbar() {
   const handleSumbit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
-
+  const [mobilenav, setMobileNav] = useState(false);
+  const toggleMobileNav = () => setMobileNav((prev) => !prev);
   const handleToggle = () => {
     if (!searchOpen) {
       setTimeout(() => {
@@ -133,9 +174,13 @@ export default function Navbar() {
             />
           </Logo>
         </Link>
-        <Ul>
+        <MobileBtn onClick={toggleMobileNav}>
+          메뉴
+          <BiDownArrow />
+        </MobileBtn>
+        <Ul mobilenav={mobilenav ? 'open' : 'close'}>
           {navigation.map((nav, idx) => (
-            <li key={idx}>
+            <li key={idx} onClick={() => setMobileNav(false)}>
               <Link to={nav.path}>
                 {nav.title}
                 {location.pathname === nav.path ? (
@@ -148,9 +193,9 @@ export default function Navbar() {
       </Nav>
       <Search onSubmit={handleSumbit}>
         <motion.div
-          initial={{ x: 250 }}
+          initial={{ x: 200 }}
           animate={{
-            x: searchOpen ? 0 : 250,
+            x: searchOpen ? 0 : 200,
             borderColor: `rgba(255,255,255,${searchOpen ? '0.5' : '0'})`,
             backgroundColor: `rgba(0,0,0,${searchOpen ? '0.5' : '0'})`,
             transition: { duration: 0.5 },
@@ -159,11 +204,7 @@ export default function Navbar() {
           <button onClick={handleToggle}>
             <BsSearch />
           </button>
-          <input
-            type='text'
-            placeholder='Search for movie or tv show.'
-            ref={inputRef}
-          />
+          <input type='text' placeholder='Search for...' ref={inputRef} />
         </motion.div>
       </Search>
     </Header>

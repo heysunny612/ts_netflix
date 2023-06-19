@@ -92,17 +92,6 @@
   right: -50px;
 }
 
-/*반응형 바꿔줘야함*/
-.slick-slide:first-child .slider_img {
-  transform-origin: center left;
-}
-
-/*반응형 바꿔줘야함*/
-.slick-slide:last-child .slider_img,
-.slick-slide:nth-child(6n) .slider_img {
-  transform-origin: center right;
-}
-
 /*------------슬라이드 인포------------*/
 
 .slider_info {
@@ -125,4 +114,21 @@
 /*랭킹 인포*/
 .slider_list.ranking .slider_info {
   text-align: right;
+}
+
+@media (max-width: 767px) {
+  .slider_title {
+    font-size: 1.5rem;
+  }
+
+  .slider_container {
+    padding: 40px 15px;
+  }
+
+  .slick-prev {
+    left: -15px;
+  }
+  .slick-next {
+    right: -15px;
+  }
 }

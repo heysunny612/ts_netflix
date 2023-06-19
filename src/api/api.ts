@@ -13,11 +13,6 @@ interface IVideo {
   id: string;
 }
 
-interface IVideosResponse {
-  id: number;
-  results: IVideo[];
-}
-
 interface Genre {
   id: number;
   name: string;
@@ -100,10 +95,10 @@ export default class Api {
     });
   }
 
-  async getVideos(movie_id: number): Promise<IVideosResponse> {
+  async getVideos(movie_id: number): Promise<IVideo[]> {
     return await this.apiClient
       .get(`movie/${movie_id}/videos`)
-      .then((data) => data.data);
+      .then((data) => data.data.results);
   }
 
   async getDetail(movie_id: number, type: string): Promise<IMediaDetail> {

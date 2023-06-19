@@ -5,13 +5,15 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import makeImgPath from '../utils/makeImgPath';
 import { MdClose } from 'react-icons/md';
+import { useBodyScrollLock } from '../utils/useLockBodyScroll';
 
 const ModalBox = styled(motion.article)`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  max-height: 100vh;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 200;
   display: flex;
@@ -23,9 +25,36 @@ const ModalBox = styled(motion.article)`
 const ModalContent = styled(motion.div)`
   position: relative;
   width: 50%;
+  max-height: 100vh;
   background-color: #141414;
   color: #fff;
   z-index: 999;
+  overflow: auto; /* 스크롤을 허용하는 속성 */
+
+  /* 스크롤바 커스터마이징 */
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+  }
+
+  @media (max-width: 1400px) {
+    width: 70%;
+  }
+  @media (max-width: 1028px) {
+    width: 80%;
+  }
+
+  @media (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const ModalBg = styled.div<{ bg: string }>`
@@ -64,9 +93,16 @@ const Content = styled.div`
   }
   .content {
     display: flex;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
     div.img {
       width: 200px;
       margin-right: 50px;
+      flex-shrink: 0;
     }
     div.info {
       text-align: left;
@@ -91,7 +127,7 @@ interface IModalProps {
 export default function Modal({ movie, type }: IModalProps) {
   const location = useLocation();
   const isTvPage = location.pathname.startsWith('/tv');
-  console.log(isTvPage);
+  const { lockScroll, unLockScroll } = useBodyScrollLock();
 
   const api = new Api();
   const { movieId } = useParams();
@@ -104,12 +140,14 @@ export default function Modal({ movie, type }: IModalProps) {
 
   const bg = makeImgPath(movie.backdrop_path, 'w500');
   const poster = makeImgPath(movie.poster_path, 'w500');
+  movieId && lockScroll();
 
   return (
     <AnimatePresence>
       {movieId ? (
         <ModalBox
           onClick={() => {
+            unLockScroll();
             navigate(-1);
           }}
           animate={{ opacity: 1 }}
@@ -127,7 +165,10 @@ export default function Modal({ movie, type }: IModalProps) {
               </h3>
               <p>{movie.overview}</p>
               <motion.button
-                onClick={() => navigate(-1)}
+                onClick={() => {
+                  unLockScroll();
+                  navigate(-1);
+                }}
                 whileHover={{ scale: 1.2 }}
                 initial={{ scale: 1 }}
               >

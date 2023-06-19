@@ -9,8 +9,17 @@ const Btn = styled.button<{ accent?: string }>`
   display: flex;
   align-items: center;
   border-radius: 5px;
-  font-size: 22px;
+  font-size: 1.5rem;
   font-weight: 300;
+
+  @media (max-width: 1200px) {
+    padding: 5px 15px;
+    font-size: 1rem;
+  }
+
+  @media (max-width: 767px) {
+  }
+
   svg {
     margin-right: 5px;
   }
@@ -24,8 +33,13 @@ const Btn = styled.button<{ accent?: string }>`
 interface IBtn {
   children: ReactNode;
   accent?: string;
+  onClick?: () => void;
 }
 
-export default function Button({ accent, children }: IBtn) {
-  return <Btn accent={accent}>{children}</Btn>;
+export default function Button({ accent, children, onClick }: IBtn) {
+  return (
+    <Btn accent={accent} onClick={onClick}>
+      {children}
+    </Btn>
+  );
 }

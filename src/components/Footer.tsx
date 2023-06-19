@@ -6,6 +6,11 @@ const Wrapper = styled.footer`
   width: 100%;
   margin: 100px auto 20px;
 
+  @media (max-width: 920px) {
+    max-width: auto;
+    padding: 15px;
+  }
+
   .footer_social {
     display: flex;
     font-size: 1.5rem;
@@ -18,6 +23,10 @@ const Wrapper = styled.footer`
     gap: 20px;
     font-size: 13px;
     color: #949494;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
     li {
       cursor: pointer;
       &:hover {

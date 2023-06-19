@@ -6,6 +6,7 @@ import makeImgPath from '../utils/makeImgPath';
 import { Variants, motion } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
 import Modal from './Modal';
+import noImg from '../assets/noimg.jpg';
 
 interface ImoviesPrpos {
   movies: IMedia[];
@@ -61,14 +62,14 @@ export default function MovieSlider({
         },
       },
       {
-        breakpoint: 1200,
+        breakpoint: 1024,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
         },
       },
       {
-        breakpoint: 800,
+        breakpoint: 768,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
@@ -108,6 +109,10 @@ export default function MovieSlider({
                   'w500'
                 )}
                 alt={movie.title}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = noImg;
+                }}
               />
               <motion.div className='slider_info' variants={infoVariants}>
                 <h4>{movie.title}</h4>
