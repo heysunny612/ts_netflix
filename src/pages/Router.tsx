@@ -4,6 +4,7 @@ import Search from './Search.tsx';
 import Tv from './Tv.tsx';
 import NotFound from './NotFound.tsx';
 import App from '../App.tsx';
+import Intro from './Intro.tsx';
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -12,7 +13,8 @@ export default function Router() {
       element: <App />,
       errorElement: <NotFound />,
       children: [
-        { index: true, element: <Home /> },
+        { index: true, element: <Intro /> },
+        { path: '/main', element: <Home /> },
         { path: '/:category/:movieId', element: <Home /> },
         { path: '/tv', element: <Tv /> },
         { path: '/tv/:category/:movieId', element: <Tv /> },
