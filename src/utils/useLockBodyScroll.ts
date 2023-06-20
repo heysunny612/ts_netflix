@@ -5,14 +5,14 @@ export function useBodyScrollLock() {
     const body = document.body;
     const scrollBarWidth = window.innerWidth - body.clientWidth;
     document.body.style.overflow = 'hidden';
-    body.style.paddingRight = `${scrollBarWidth}px`;
+    body.style.marginRight = `${scrollBarWidth}px`;
   }, []);
 
   const unLockScroll = useCallback(() => {
     document.body.style.removeProperty('overflow');
     const body = document.body;
     body.style.overflow = '';
-    body.style.paddingRight = '';
+    body.style.marginRight = '';
   }, []);
 
   useLayoutEffect(() => {

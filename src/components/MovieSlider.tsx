@@ -3,10 +3,12 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { IMedia } from '../api/api';
 import makeImgPath from '../utils/makeImgPath';
-import { Variants, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
 import Modal from './Modal';
 import noImg from '../assets/noimg.jpg';
+import { imgVariants } from '../utils/hoverVarients';
+import { infoVariants } from '../utils/hoverVarients';
 
 interface ImoviesPrpos {
   movies: IMedia[];
@@ -14,24 +16,6 @@ interface ImoviesPrpos {
   ranking?: boolean;
   type: string;
 }
-
-const imgVariants: Variants = {
-  normal: {
-    scale: 1,
-  },
-  hover: {
-    scale: 1.3,
-    transition: { delay: 0.3 },
-    y: -10,
-  },
-};
-
-const infoVariants: Variants = {
-  hover: {
-    opacity: 1,
-    transition: { delay: 0.3 },
-  },
-};
 
 export default function MovieSlider({
   movies,

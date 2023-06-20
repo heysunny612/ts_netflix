@@ -86,7 +86,7 @@ export default function Banner({ movie, page, type }: IBannerProps) {
   return (
     <>
       <BannerWrap bg={makeImgPath(movie?.backdrop_path || '')}>
-        {page !== 'tv' && !isSmallScreen && videos && videos?.length !== 0 && (
+        {page !== 'tv' && !isSmallScreen && videos && videos?.length !== 0 ? (
           <ReactPlayer
             url={videos?.map((video) => `https://youtu.be/${video.key}`)}
             loop={true}
@@ -109,7 +109,7 @@ export default function Banner({ movie, page, type }: IBannerProps) {
             }}
             pip={true}
           />
-        )}
+        ) : null}
         <BannerInfo>
           <motion.h2
             initial={{
