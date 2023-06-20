@@ -13,7 +13,7 @@ const Header = styled(motion.header)`
   position: fixed;
   width: 100%;
   height: 80px;
-  z-index: 30;  
+  z-index: 30;
 
   @media (max-width: 968px) {
     padding: 0 15px;
@@ -121,7 +121,7 @@ export default function Navbar() {
   return (
     <Header style={{ background: bg }}>
       <Nav>
-        <Link to='/'>
+        <Link to='/main'>
           <Logo xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 276.742'>
             <motion.path
               variants={logoVariants}
