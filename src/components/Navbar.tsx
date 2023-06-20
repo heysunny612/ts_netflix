@@ -11,9 +11,11 @@ const Header = styled(motion.header)`
   align-items: center;
   padding: 0 50px;
   position: fixed;
-  width: 100%;
+  width: 100vw;
   height: 80px;
   z-index: 30;
+  top: 0;
+  left: 0;
 
   @media (max-width: 968px) {
     padding: 0 15px;
@@ -30,20 +32,26 @@ const Logo = styled(motion.svg)`
   margin-right: 30px;
   fill: ${(props) => props.theme.red};
   @media (max-width: 968px) {
-    height: 20px;
+    height: 30px;
     margin-right: 0;
+  }
+  @media (max-width: 640px) {
+    height: 15px;
   }
 `;
 
 const MobileBtn = styled.button`
   display: none;
-  margin-left: 10px;
+  margin-left: 5px;
   color: #fff;
-  font-size: 1rem;
+  font-size: 1.2rem;
 
   @media (max-width: 968px) {
     display: flex;
     align-items: center;
+  }
+  @media (max-width: 640px) {
+    font-size: 0.8rem;
   }
 `;
 

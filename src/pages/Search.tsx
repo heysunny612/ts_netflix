@@ -11,8 +11,8 @@ import { imgVariants } from '../utils/hoverVarients';
 import { infoVariants } from '../utils/hoverVarients';
 import noImg from '../assets/noimg.jpg';
 
-const Wrap = styled.section`
-  padding: 150px 50px 20px;
+const Wrap = styled.div`
+  padding: 100px 50px 20px;
 
   ul.search_list {
     display: grid;
@@ -40,7 +40,7 @@ const Wrap = styled.section`
     }
   }
   @media (max-width: 968px) {
-    padding: 0 15px;
+    padding: 100px 15px;
   }
 `;
 

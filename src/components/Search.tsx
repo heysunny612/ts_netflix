@@ -21,6 +21,9 @@ const SearchForm = styled.form`
     border: 1px solid transparent;
     padding: 5px 3px;
     border-radius: 5px;
+    @media (max-width: 768px) {
+      padding: 2px;
+    }
   }
 
   input[type='text'] {
@@ -31,6 +34,9 @@ const SearchForm = styled.form`
     border: 0 none;
     color: #fff;
     outline: none;
+    @media (max-width: 640px) {
+      padding: 2px;
+    }
   }
   button {
     color: #fff;
