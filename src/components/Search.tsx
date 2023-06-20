@@ -9,6 +9,11 @@ const SearchForm = styled.form`
   display: flex;
   align-items: center;
 
+  @media (max-width: 968px) {
+    position: absolute;
+    right: 10px;
+  }
+
   div {
     display: flex;
     justify-content: space-between;

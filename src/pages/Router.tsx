@@ -15,7 +15,7 @@ export default function Router() {
       children: [
         { index: true, element: <Intro /> },
         { path: '/main', element: <Home /> },
-        { path: '/:category/:movieId', element: <Home /> },
+        { path: '/main/:category/:movieId', element: <Home /> },
         { path: '/tv', element: <Tv /> },
         { path: '/tv/:category/:movieId', element: <Tv /> },
         { path: '/search', element: <Search /> },

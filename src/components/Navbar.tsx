@@ -13,7 +13,7 @@ const Header = styled(motion.header)`
   position: fixed;
   width: 100%;
   height: 80px;
-  z-index: 30;
+  z-index: 30;  
 
   @media (max-width: 968px) {
     padding: 0 15px;
@@ -102,7 +102,7 @@ const logoVariants: Variants = {
 };
 
 const navigation = [
-  { title: 'HOME', path: '/' },
+  { title: 'HOME', path: '/main' },
   { title: 'TV Shows', path: '/tv' },
 ];
 
